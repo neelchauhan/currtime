@@ -1,0 +1,48 @@
+== WHAT IS currtime? ==
+
+currtime is a command-line operated real time clock. currtime displays the
+current system date and time in a Unix-compatible format.
+
+== Getting Started ==
+
+If you obtained currtime from a package provided by a Linux distribution like
+Ubuntu, or a non-Linux based operating system like FreeBSD, you probably have
+already installed currtime. If so, you can just type in "currtime" in a shell
+prompt to run currtime, and press CTRL-C or CTRL-Z to exit currtime and return
+to the shell.
+
+Otherwise, you'd have to compile currtime yourself. In order to do this, you
+need a Unix-like operating system and a C compiler. If you have both, then
+you'd need to download and extract the currtime source code, and then you can
+just run this at your shell prompt:
+
+	$ make
+
+From there, if you just want to run currtime without installing it, then try
+this (provided you're in the same directory you ran "make" in):
+
+	$ ./currtime
+
+If you want to install it officially, you can run one of the following:
+
+	( if sudo is used to gain superuser/root privileges )
+	$ sudo make install
+ --OR--
+	( if su is used to gain superuser/root privileges )
+	$ su
+	$ make install
+ --OR--
+	( if logged in as root )
+	$ make install
+
+Keep in mind that currtime installs into /usr/local/bin by default.
+
+After you installed currtime, you can run currtime by just running this:
+
+	$ currtime
+
+== Copyright ==
+
+currtime is written by Neel Chauhan <neel (AT) neelc (DOT) org> and is licensed
+under the Simplified BSD License. A copy of this license is located in the file
+"LICENSE".
