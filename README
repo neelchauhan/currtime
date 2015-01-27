@@ -1,15 +1,21 @@
 == WHAT IS currtime? ==
 
-currtime is a command-line operated real time clock. currtime displays the
-current system date and time in a Unix-compatible format.
+currtime is an enhanced command-line operated real time clock.
 
-== Getting Started ==
+== FEATURES  ==
+
+ * Time displayed in Unix-compatible format
+ * Shows the current time on the same line
+ * Can run for a specified number of ticks (seconds) with the -T (ticks) flag
+ * Option to display each tick on a new line with the -n flag
+
+== GETTING STARTED ==
 
 If you obtained currtime from a package provided by a Linux distribution like
-Ubuntu, or a non-Linux based operating system like FreeBSD, you probably have
-already installed currtime. If so, you can just type in "currtime" in a shell
-prompt to run currtime, and press CTRL-C or CTRL-Z to exit currtime and return
-to the shell.
+Ubuntu, or a non-Linux based operating system such as FreeBSD, you probably
+have already installed currtime. If so, you can just type in "currtime" in a
+shell prompt to run currtime, and press CTRL-C or CTRL-Z to exit currtime and
+return to the shell.
 
 Otherwise, you'd have to compile currtime yourself. In order to do this, you
 need a Unix-like operating system and a C compiler. If you have both, then
@@ -30,18 +36,28 @@ If you want to install it officially, you can run one of the following:
  --OR--
 	( if su is used to gain superuser/root privileges )
 	$ su
-	$ make install
+	# make install
  --OR--
 	( if logged in as root )
 	$ make install
 
-Keep in mind that currtime installs into /usr/local/bin by default.
+Keep in mind that currtime installs into /usr/local/bin by default. This can be
+overrided by changing the Makefile.
 
 After you installed currtime, you can run currtime by just running this:
 
 	$ currtime
 
-== Copyright ==
+To view the help information, you can run this:
+
+	$ currtime -h
+
+== WINDOWS USERS ==
+
+Right now, I have not tested currtime on Windows, and therefore, currtime may
+or may not work on Windows. Keep in mind that this may change in the future.
+
+== COPYRIGHT ==
 
 currtime is written by Neel Chauhan <neel (AT) neelc (DOT) org> and is licensed
 under the Simplified BSD License. A copy of this license is located in the file
