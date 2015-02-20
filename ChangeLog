@@ -1,3 +1,7 @@
+2015-02-20 Neel Chauhan <neel@neelc.org>
+ * New Version (0.2.1)
+ * New Feature: '-t' option to display a tick number with each tick
+
 2015-01-25 Neel Chauhan <neel@neelc.org>
  * New Version (0.2)
  * New Feature: '-T' option to run for a specified number of ticks

@@ -1,4 +1,4 @@
-// currtime 0.2
+// currtime 0.2.1
 // Copyright (c) 2015 Neel Chuahan <neel@neelc.org>
 // All Rights Reserved.
 //
@@ -23,7 +23,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define APP_NAME "currtime"
-#define APP_VER "0.2"
+#define APP_VER "0.2.1"
 #define APP_COPYYEAR "2015"
 #define APP_AUTHOR "Neel Chauhan"
 #define APP_AUTHOR_EMAIL "neel@neelc.org"
@@ -35,9 +35,10 @@
 #include <time.h>
 #include <unistd.h>
 
+int nflag = 0;
+int tflag = 0;
 int Tflag = 0;
 long int tickno = 0;
-int nflag = 0;
 
 void runclock(void);
 void showusage(char *binname);
@@ -52,14 +53,17 @@ void stnline(char *str) {
 int main(int argc, char *argv[]) {
 	int carg;
 	opterr = 0;
-	while ((carg = getopt(argc, argv, "T:nh")) != -1) {
+	while ((carg = getopt(argc, argv, "ntT:h")) != -1) {
 		switch (carg) {
+			case 'n':
+				nflag = 1;
+				break;
+			case 't':
+				tflag = 1;
+				break;
 			case 'T':
 				Tflag = 1;
 				tickno = strtol(optarg, NULL, 10);
-				break;
-			case 'n':
-				nflag = 1;
 				break;
 			case 'h':
 				showusage(argv[0]);
@@ -99,7 +103,15 @@ void runclock(void) {
 				break;
 			default:
 				strcpy(output, current);
-				printf("\r%s", output);
+				putchar('\r');
+				switch (tflag) {
+					case 1:
+						printf("%ld\t", currticks);
+						break;
+					default:
+						break;
+				}
+				printf("%s", output);
 				switch (nflag) {
 					case 1:
 						putchar('\n');
@@ -126,9 +138,10 @@ void runclock(void) {
 void showusage(char *binname) {
 	printf("%s %s\n", APP_NAME, APP_VER);
 	printf("Copyright %s %s <%s>\n", APP_COPYYEAR, APP_AUTHOR, APP_AUTHOR_EMAIL);
-	printf("Usage: %s [-Tnh]\n", binname);
+	printf("Usage: %s [-tnh] [-T TICKS]\n", binname);
 	printf("Options include:\n");
 	printf("  -n\t\tDisplay the time on a new line for every tick (second)\n");
+	printf("  -t\t\tPrint tick number \n");
 	printf("  -T TICKS\tRun for 'TICKS' number of ticks\n");
 	printf("  -h\t\tDisplay this help\n");
 	exit(0);
