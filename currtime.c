@@ -1,4 +1,4 @@
-// currtime 0.2.1
+// currtime 0.2.2
 // Copyright (c) 2015 Neel Chuahan <neel@neelc.org>
 // All Rights Reserved.
 //
@@ -23,10 +23,14 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define APP_NAME "currtime"
-#define APP_VER "0.2.1"
+#define APP_VER "0.2.2"
 #define APP_COPYYEAR "2015"
 #define APP_AUTHOR "Neel Chauhan"
 #define APP_AUTHOR_EMAIL "neel@neelc.org"
+
+#define T_MINUTE 60
+#define T_HOUR 60 * T_MINUTE
+#define T_DAY 24 * T_HOUR
 
 #include <ctype.h>
 #include <stdio.h>
@@ -40,6 +44,7 @@ int tflag = 0;
 int Tflag = 0;
 long int tickno = 0;
 
+void calcticks(char *str);
 void runclock(void);
 void showusage(char *binname);
 
@@ -63,7 +68,10 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'T':
 				Tflag = 1;
-				tickno = strtol(optarg, NULL, 10);
+				//tickno = strtol(optarg, NULL, 10);
+				//putchar(optarg[strlen(optarg)-1]);
+				//putchar('\n');
+				calcticks(optarg);
 				break;
 			case 'h':
 				showusage(argv[0]);
@@ -83,6 +91,25 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	runclock();
+}
+
+void calcticks(char *str) {
+	int endch;
+	tickno = strtol(optarg, NULL, 10);
+	endch = optarg[strlen(optarg)-1];
+	switch (toupper(endch)) {
+		case 'M':
+			tickno = tickno * T_MINUTE;
+			break;
+		case 'H':
+			tickno = tickno * T_HOUR;
+			break;
+		case 'D':
+			tickno = tickno * T_DAY;
+			break;
+		default:
+			break;
+	}
 }
 
 void runclock(void) {
@@ -142,7 +169,10 @@ void showusage(char *binname) {
 	printf("Options include:\n");
 	printf("  -n\t\tDisplay the time on a new line for every tick (second)\n");
 	printf("  -t\t\tPrint tick number \n");
-	printf("  -T TICKS\tRun for 'TICKS' number of ticks\n");
+	printf("  -T TICKS\tRun for 'TICKS' number of ticks, or for 'TICKS'\n");
+	printf("\t\tnumber of minutes, hours, or days with a suffix of M, H, or D\n");
+	printf("\t\trespectively (suffixes are not case sensitive, but only one \n");
+	printf("\t\tsuffix can be used at runtime)\n");
 	printf("  -h\t\tDisplay this help\n");
 	exit(0);
 }

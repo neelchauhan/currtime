@@ -1,3 +1,8 @@
+2015-03-30 Neel Chauhan <neel@neelc.org>
+ * New Version (0.2.2)
+ * New Feature: Ability to use '-T' with a suffix of 'M', 'H', or 'D' to run
+   for a specified number of minutes, hours, or days
+
 2015-02-20 Neel Chauhan <neel@neelc.org>
  * New Version (0.2.1)
  * New Feature: '-t' option to display a tick number with each tick

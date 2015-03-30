@@ -7,6 +7,9 @@ currtime is an enhanced command-line operated real time clock.
  * Time displayed in Unix-compatible format
  * Shows the current time on the same line
  * Can run for a specified number of ticks (seconds) with the -T (ticks) flag
+ * Suffixes for the -T option: 'M', 'H', and 'D' to run currtime for a
+   specified number of minutes, hours, or days respectively
+  * LIMITATION: Only one suffix can be used at runtime
  * Option to display each tick on a new line with the -n flag
  * Ability to display a tick number preceding a tick with the -t flag
 
