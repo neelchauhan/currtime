@@ -1,3 +1,8 @@
+2015-04-23 Neel Chauhan <neel@neelc.org>
+ * New Version (0.2.3)
+ * New Feature: '-e' option to run a specified program after a defined amount
+   of ticks ('-e' requires '-T' to be set)
+
 2015-03-30 Neel Chauhan <neel@neelc.org>
  * New Version (0.2.2)
  * New Feature: Ability to use '-T' with a suffix of 'M', 'H', or 'D' to run

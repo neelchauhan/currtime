@@ -1,4 +1,4 @@
-// currtime 0.2.2
+// currtime 0.2.3
 // Copyright (c) 2015 Neel Chuahan <neel@neelc.org>
 // All Rights Reserved.
 //
@@ -23,7 +23,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define APP_NAME "currtime"
-#define APP_VER "0.2.2"
+#define APP_VER "0.2.3"
 #define APP_COPYYEAR "2015"
 #define APP_AUTHOR "Neel Chauhan"
 #define APP_AUTHOR_EMAIL "neel@neelc.org"
@@ -42,6 +42,8 @@
 int nflag = 0;
 int tflag = 0;
 int Tflag = 0;
+int eflag = 0;
+char *efexec;
 long int tickno = 0;
 
 void calcticks(char *str);
@@ -58,7 +60,7 @@ void stnline(char *str) {
 int main(int argc, char *argv[]) {
 	int carg;
 	opterr = 0;
-	while ((carg = getopt(argc, argv, "ntT:h")) != -1) {
+	while ((carg = getopt(argc, argv, "ntT:e:h")) != -1) {
 		switch (carg) {
 			case 'n':
 				nflag = 1;
@@ -73,6 +75,11 @@ int main(int argc, char *argv[]) {
 				//putchar('\n');
 				calcticks(optarg);
 				break;
+			case 'e':
+				eflag = 1;
+				efexec = (char*) malloc(strlen(optarg)+1);
+				strcpy(efexec, optarg);
+				break;
 			case 'h':
 				showusage(argv[0]);
 				break;
@@ -80,7 +87,7 @@ int main(int argc, char *argv[]) {
 				if (optopt == 'c')
 					fprintf(stderr, "Option -%c requires an argument\n", optopt);
 				else if (isprint(optopt))
-					fprintf(stderr, "Unknown option `-%c'\n", optopt);
+					fprintf(stderr, "Unknown option '-%c'\n", optopt);
 				else
 					fprintf(stderr, "Unknown option character `\\x%x'\n", optopt);
 				return 1;
@@ -89,6 +96,10 @@ int main(int argc, char *argv[]) {
 				abort();
 				break;
 		}
+	}
+	if ((eflag == 1) && (Tflag == 0)) {
+		printf("Option -e requires -T to be set\n");
+		exit(-1);
 	}
 	runclock();
 }
@@ -156,6 +167,10 @@ void runclock(void) {
 		if (Tflag == 1) {
 			if (currticks == tickno) {
 				putchar('\n');
+				if (eflag == 1) {
+					system(efexec);
+					free(efexec);
+				}
 				exit(0);
 			}
 		}
@@ -165,7 +180,7 @@ void runclock(void) {
 void showusage(char *binname) {
 	printf("%s %s\n", APP_NAME, APP_VER);
 	printf("Copyright %s %s <%s>\n", APP_COPYYEAR, APP_AUTHOR, APP_AUTHOR_EMAIL);
-	printf("Usage: %s [-tnh] [-T TICKS]\n", binname);
+	printf("Usage: %s [-tnh] [-T TICKS] [-e EXECNAME]\n", binname);
 	printf("Options include:\n");
 	printf("  -n\t\tDisplay the time on a new line for every tick (second)\n");
 	printf("  -t\t\tPrint tick number \n");
@@ -173,6 +188,8 @@ void showusage(char *binname) {
 	printf("\t\tnumber of minutes, hours, or days with a suffix of M, H, or D\n");
 	printf("\t\trespectively (suffixes are not case sensitive, but only one \n");
 	printf("\t\tsuffix can be used at runtime)\n");
+	printf("  -e\t\tExecute 'EXECNAME' after 'TICKS' number of ticks (requires -T\n");
+	printf("\t\tto be set)\n");
 	printf("  -h\t\tDisplay this help\n");
 	exit(0);
 }
