@@ -1,3 +1,8 @@
+2015-06-21 Neel Chauhan <neel@neelc.org>
+ * New Version (0.2.4)
+ * Revision: currtime now refreshes the time once per every 1/20 of a second
+   instead of once per second in order to improve accuracy.
+
 2015-04-23 Neel Chauhan <neel@neelc.org>
  * New Version (0.2.3)
  * New Feature: '-e' option to run a specified program after a defined amount

@@ -1,4 +1,4 @@
-// currtime 0.2.3
+// currtime 0.2.4
 // Copyright (c) 2015 Neel Chuahan <neel@neelc.org>
 // All Rights Reserved.
 //
@@ -23,7 +23,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define APP_NAME "currtime"
-#define APP_VER "0.2.3"
+#define APP_VER "0.2.4"
 #define APP_COPYYEAR "2015"
 #define APP_AUTHOR "Neel Chauhan"
 #define APP_AUTHOR_EMAIL "neel@neelc.org"
@@ -70,9 +70,6 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'T':
 				Tflag = 1;
-				//tickno = strtol(optarg, NULL, 10);
-				//putchar(optarg[strlen(optarg)-1]);
-				//putchar('\n');
 				calcticks(optarg);
 				break;
 			case 'e':
@@ -159,7 +156,7 @@ void runclock(void) {
 						fflush(stdout);
 						break;
 				}
-				sleep(1);
+				usleep(50000);
 				currticks++;
 				break;
 		}

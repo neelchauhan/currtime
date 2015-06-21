@@ -12,6 +12,7 @@ currtime is an enhanced command-line operated real time clock.
   * LIMITATION: Only one suffix can be used at runtime
  * Option to display each tick on a new line with the -n flag
  * Ability to display a tick number preceding a tick with the -t flag
+ * Option to execute program after -T ticks with the -e flag
 
 == GETTING STARTED ==
 
