@@ -1,3 +1,7 @@
+2016-05-14 Neel Chauhan <neel@neelc.org>
+ * New Version (0.2.5)
+ * Transition away from global variables
+
 2015-06-21 Neel Chauhan <neel@neelc.org>
  * New Version (0.2.4)
  * Revision: currtime now refreshes the time once per every 1/20 of a second

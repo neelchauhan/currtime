@@ -1,5 +1,5 @@
-// currtime 0.2.4
-// Copyright (c) 2015 Neel Chuahan <neel@neelc.org>
+// currtime 0.2.5
+// Copyright (c) 2016 Neel Chuahan <neel@neelc.org>
 // All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,8 +23,8 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define APP_NAME "currtime"
-#define APP_VER "0.2.4"
-#define APP_COPYYEAR "2015"
+#define APP_VER "0.2.5"
+#define APP_COPYYEAR "2016"
 #define APP_AUTHOR "Neel Chauhan"
 #define APP_AUTHOR_EMAIL "neel@neelc.org"
 
@@ -39,15 +39,18 @@
 #include <time.h>
 #include <unistd.h>
 
-int nflag = 0;
-int tflag = 0;
-int Tflag = 0;
-int eflag = 0;
-char *efexec;
-long int tickno = 0;
+typedef struct {
+	int nflag;
+	int tflag;
+	int Tflag;
+	int eflag;
+	char *efexec;
+	unsigned long int tickno;
+} argdef;
 
-void calcticks(char *str);
-void runclock(void);
+void initdef(argdef* args);
+void calcticks(argdef* args, char *str);
+void runclock(argdef* args);
 void showusage(char *binname);
 
 void stnline(char *str) {
@@ -60,22 +63,24 @@ void stnline(char *str) {
 int main(int argc, char *argv[]) {
 	int carg;
 	opterr = 0;
+	argdef args;
+	initdef(&args);
 	while ((carg = getopt(argc, argv, "ntT:e:h")) != -1) {
 		switch (carg) {
 			case 'n':
-				nflag = 1;
+				args.nflag = 1;
 				break;
 			case 't':
-				tflag = 1;
+				args.tflag = 1;
 				break;
 			case 'T':
-				Tflag = 1;
-				calcticks(optarg);
+				args.Tflag = 1;
+				calcticks(&args, optarg);
 				break;
 			case 'e':
-				eflag = 1;
-				efexec = (char*) malloc(strlen(optarg)+1);
-				strcpy(efexec, optarg);
+				args.eflag = 1;
+				args.efexec = (char*) malloc(strlen(optarg)+1);
+				strcpy(args.efexec, optarg);
 				break;
 			case 'h':
 				showusage(argv[0]);
@@ -94,33 +99,41 @@ int main(int argc, char *argv[]) {
 				break;
 		}
 	}
-	if ((eflag == 1) && (Tflag == 0)) {
+	if ((args.eflag == 1) && (args.Tflag == 0)) {
 		printf("Option -e requires -T to be set\n");
 		exit(-1);
 	}
-	runclock();
+	runclock(&args);
 }
 
-void calcticks(char *str) {
+void initdef(argdef* args) {
+	args->nflag = 0;
+	args->tflag = 0;
+	args->Tflag = 0;
+	args->eflag = 0;
+	args->tickno = 0;
+}
+
+void calcticks(argdef* args, char *str) {
 	int endch;
-	tickno = strtol(optarg, NULL, 10);
+	args->tickno = strtol(optarg, NULL, 10);
 	endch = optarg[strlen(optarg)-1];
 	switch (toupper(endch)) {
 		case 'M':
-			tickno = tickno * T_MINUTE;
+			args->tickno = args->tickno * T_MINUTE;
 			break;
 		case 'H':
-			tickno = tickno * T_HOUR;
+			args->tickno = args->tickno * T_HOUR;
 			break;
 		case 'D':
-			tickno = tickno * T_DAY;
+			args->tickno = args->tickno * T_DAY;
 			break;
 		default:
 			break;
 	}
 }
 
-void runclock(void) {
+void runclock(argdef* args) {
 	char current[64];
 	char output[64];
 	long int currticks = 0;
@@ -139,7 +152,7 @@ void runclock(void) {
 			default:
 				strcpy(output, current);
 				putchar('\r');
-				switch (tflag) {
+				switch (args->tflag) {
 					case 1:
 						printf("%ld\t", currticks);
 						break;
@@ -147,7 +160,7 @@ void runclock(void) {
 						break;
 				}
 				printf("%s", output);
-				switch (nflag) {
+				switch (args->nflag) {
 					case 1:
 						putchar('\n');
 						break;
@@ -161,12 +174,12 @@ void runclock(void) {
 				break;
 		}
 
-		if (Tflag == 1) {
-			if (currticks == tickno) {
+		if (args->Tflag == 1) {
+			if (currticks == args->tickno) {
 				putchar('\n');
-				if (eflag == 1) {
-					system(efexec);
-					free(efexec);
+				if (args->eflag == 1) {
+					system(args->efexec);
+					free(args->efexec);
 				}
 				exit(0);
 			}
